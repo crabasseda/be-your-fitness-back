@@ -1,18 +1,13 @@
 import express from "express";
 const router = express.Router();
 
-import { getUserByIdController } from "../controller/userController.js";
+import {
+  getAllUsersController,
+  getUserByIdController,
+} from "../controller/userController.js";
 
 // GET /users
-router.get("/", async (req, res, next) => {
-  try {
-    const collection = await db.collection("users");
-    const results = await collection.find({}).toArray();
-    res.status(200).json(results);
-  } catch (error) {
-    next(error);
-  }
-});
+router.get("/", getAllUsersController);
 
 // GET /users/:id
 router.get("/:id", getUserByIdController);

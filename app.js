@@ -1,11 +1,12 @@
 import express from "express";
-
-import userRouter from "./routes/userRouter.js";
+import routineRouter from "./src/routes/routineRouter.js";
+import userRouter from "./src/routes/userRouter.js";
 
 const app = express();
 
 app.use(express.json());
 app.use("/users", userRouter);
+app.use("/routines", routineRouter);
 
 app.use((error, req, res, next) => {
   console.error(error);

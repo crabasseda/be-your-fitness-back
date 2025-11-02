@@ -50,3 +50,5 @@ export const athletesData = [
     trainer_index: 0, // entrenadora Laura
   },
 ];
+
+export const routinesData = [];

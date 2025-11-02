@@ -3,14 +3,14 @@ import * as userService from "../services/userService.js";
 
 // GET /users
 
-// export const getAllUsersController = async (req, res, next) => {
-//   try {
-//     const users = await usersService.getAllUsers();
-//     res.status(200).json(users);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+export const getAllUsersController = async (req, res, next) => {
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+};
 
 // GET /users/:id
 export const getUserByIdController = async (req, res, next) => {
