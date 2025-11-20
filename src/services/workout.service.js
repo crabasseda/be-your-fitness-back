@@ -1,32 +1,25 @@
-// services/workout.service.js
+import mongoose from "mongoose";
 import { Workout } from "../models/workout.model.js";
 
-/**
- * Crea un nuevo workout completado
- */
 export async function createWorkout(workoutData) {
-  const workout = new Workout({
-    user_id: workoutData.user_id,
-    routine_id: workoutData.routine_id,
-    routine_name: workoutData.routine_name,
-    routine_type: workoutData.routine_type,
-    started_at: workoutData.started_at,
-    finished_at: workoutData.finished_at,
-    duration_seconds: workoutData.duration_seconds,
-    exercises: workoutData.exercises,
-    notes: workoutData.notes || "",
-  });
-
-  await workout.save();
-  return workout.toObject();
+  const newWorkout = new Workout(workoutData);
+  await newWorkout.save();
+  return newWorkout.toObject();
 }
 
-/**
- * Obtiene workouts para un mes específico (para el calendario)
- */
+export async function getRecentWorkouts(userId, limit = 10) {
+  const workouts = await Workout.find({ user_id: userId })
+    .sort({ createdAt: -1 }) // Más reciente primero
+    .limit(limit)
+    .select("routine_name routine_type duration_seconds exercises createdAt")
+    .lean();
+
+  return workouts;
+}
+
 export async function getWorkoutsForCalendar(userId, year, month) {
-  const startDate = new Date(year, month - 1, 1);
-  const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+  const startDate = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0));
+  const endDate = new Date(Date.UTC(year, month, 0, 23, 59, 59, 999));
 
   const workouts = await Workout.find({
     user_id: userId,
@@ -38,7 +31,6 @@ export async function getWorkoutsForCalendar(userId, year, month) {
     .sort({ started_at: 1 })
     .lean();
 
-  // Agrupar por día
   const calendarData = {};
 
   workouts.forEach((workout) => {
@@ -66,14 +58,12 @@ export async function getWorkoutsForCalendar(userId, year, month) {
   return calendarData;
 }
 
-/**
- * Obtiene estadísticas básicas del usuario
- */
 export async function getWorkoutStats(userId) {
+  const userObjectId = new mongoose.Types.ObjectId(userId);
   const now = new Date();
 
   // Total de workouts
-  const totalWorkouts = await Workout.countDocuments({ user_id: userId });
+  const totalWorkouts = await Workout.countDocuments({ user_id: userObjectId });
 
   // Workouts esta semana
   const startOfWeek = new Date(now);
@@ -95,7 +85,7 @@ export async function getWorkoutStats(userId) {
 
   // Duración total
   const durationResult = await Workout.aggregate([
-    { $match: { user_id: new mongoose.Types.ObjectId(userId) } },
+    { $match: { user_id: userObjectId } },
     {
       $group: {
         _id: null,

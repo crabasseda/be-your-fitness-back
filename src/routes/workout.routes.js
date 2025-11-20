@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createWorkoutController,
+  getRecentWorkoutsController,
   getWorkoutsForCalendarController,
   getWorkoutStatsController,
 } from "../controllers/workout.controller.js";
@@ -11,6 +12,9 @@ router.use(verifyToken);
 
 //POST / - Crear workout
 router.post("/", createWorkoutController);
+
+// GET /recent - Obtener rutinas realizadas recientemente
+router.get("/recent", getRecentWorkoutsController);
 
 // GET /calendar/month -  Obtener workouts para calendario
 router.get("/calendar/month", getWorkoutsForCalendarController);
