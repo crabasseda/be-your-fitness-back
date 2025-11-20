@@ -1,20 +1,38 @@
+// import dotenv from "dotenv";
+// import { MongoClient } from "mongodb";
+
+// dotenv.config();
+
+// const uri = process.env.ATLAS_URI;
+// const client = new MongoClient(uri);
+
+// let connection;
+// try {
+//   connection = await client.connect();
+// } catch (error) {
+//   console.log(error);
+// }
+
+// const db = connection.db("be_your_fitness_app");
+// export default db;
+
 import dotenv from "dotenv";
-import { MongoClient } from "mongodb";
+import mongoose from "mongoose";
 
 dotenv.config();
 
-const uri = process.env.ATLAS_URI;
-const client = new MongoClient(uri);
-
-let connection;
-try {
-  connection = await client.connect();
-} catch (error) {
-  console.log(error);
+export async function connectDB() {
+  try {
+    await mongoose.connect(process.env.ATLAS_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("✅ Conectado a MongoDB Atlas");
+  } catch (error) {
+    console.error("❌ Error al conectar con MongoDB Atlas:", error.message);
+    process.exit(1);
+  }
 }
-
-const db = connection.db("be_your_fitness_app");
-export default db;
 
 //insert data
 

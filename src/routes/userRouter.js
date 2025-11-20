@@ -4,7 +4,7 @@ const router = express.Router();
 import {
   getAllUsersController,
   getUserByIdController,
-} from "../controller/userController.js";
+} from "../controllers/userController.js";
 
 // GET /users
 router.get("/", getAllUsersController);

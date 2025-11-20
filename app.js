@@ -1,12 +1,20 @@
+import cors from "cors";
 import express from "express";
-import routineRouter from "./src/routes/routineRouter.js";
-import userRouter from "./src/routes/userRouter.js";
+import authRoutes from "./src/routes/auth.routes.js";
+import routineRoutes from "./src/routes/routine.routes.js";
+import assignmentRoutes from "./src/routes/routineAssignment.routes.js";
+import workoutRoutes from "./src/routes/workout.routes.js";
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
-app.use("/users", userRouter);
-app.use("/routines", routineRouter);
+
+// app.use("/api/users", userRouter);
+app.use("/api/routines", routineRoutes);
+app.use("/api/assignments", assignmentRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/workouts", workoutRoutes);
 
 app.use((error, req, res, next) => {
   console.error(error);
