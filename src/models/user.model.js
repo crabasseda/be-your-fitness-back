@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    versionKey: false, // Oculta el campo __v
+    versionKey: false,
   }
 );
 

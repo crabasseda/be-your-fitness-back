@@ -1,4 +1,3 @@
-// routes/routine.routes.js
 import express from "express";
 import {
   deleteRoutineController,
@@ -13,10 +12,10 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-// GET /routines - Listar todas (cards)
+// GET / - Listar todas
 router.get("/", getAllRoutinesController);
 
-// GET /routines/:id - Detalle completo (edición)
+// GET /routines/:id - Detalle completo
 router.get("/:id", getRoutineByIdController);
 
 // POST /routines - Crear rutina completa

@@ -1,4 +1,3 @@
-// models/routine.model.js
 import mongoose from "mongoose";
 
 const setSchema = new mongoose.Schema(
@@ -13,16 +12,14 @@ const setSchema = new mongoose.Schema(
 const exerciseInRoutineSchema = new mongoose.Schema(
   {
     exercise_id: {
-      type: String, // ← Cambiado a String (será el ID de la API externa)
+      type: String,
       required: true,
     },
     exercise_name: {
-      // ← Guardar el nombre para las cards
       type: String,
       required: true,
     },
     exercise_image: {
-      // ← Opcional: guardar imagen para las cards
       type: String,
       default: "",
     },
@@ -52,7 +49,6 @@ const recurrenceSchema = new mongoose.Schema(
       type: [Number],
       validate: {
         validator: function (v) {
-          // Solo validar si existe el array
           if (!v) return true;
           return v.every((day) => day >= 0 && day <= 6);
         },
@@ -84,7 +80,6 @@ const scheduleSchema = new mongoose.Schema(
     },
     specificDate: {
       type: Date,
-      // Solo requerido si type es 'one-time'
       validate: {
         validator: function (v) {
           if (this.type === "one-time") {

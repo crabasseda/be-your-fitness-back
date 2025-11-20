@@ -1,4 +1,3 @@
-// models/workout.model.js
 import mongoose from "mongoose";
 
 const setInWorkoutSchema = new mongoose.Schema(
