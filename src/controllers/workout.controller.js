@@ -25,14 +25,17 @@ export const createWorkoutController = async (req, res, next) => {
 
 export const getRecentWorkoutsController = async (req, res, next) => {
   try {
-    const userId = req.user?.id || req.body.user_id;
+    const userId = req.user.id;
     const limit = parseInt(req.query.limit) || 10;
+    const { start_date, end_date } = req.query;
 
-    const recentWorkouts = await workoutService.getRecentWorkouts(
+    const workouts = await workoutService.getRecentWorkouts(
       userId,
-      limit
+      limit,
+      start_date,
+      end_date
     );
-    res.status(200).json(recentWorkouts);
+    res.status(200).json(workouts);
   } catch (error) {
     next(error);
   }
@@ -56,16 +59,6 @@ export const getWorkoutsForCalendarController = async (req, res, next) => {
     );
 
     res.status(200).json(calendarData);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const getWorkoutStatsController = async (req, res, next) => {
-  try {
-    const userId = req.user._id;
-    const stats = await workoutService.getWorkoutStats(userId);
-    res.status(200).json(stats);
   } catch (error) {
     next(error);
   }
