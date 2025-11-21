@@ -23,19 +23,17 @@ export async function getWorkoutsForCalendar(userId, year, month) {
 
   const workouts = await Workout.find({
     user_id: userId,
-    started_at: {
+    createdAt: {
       $gte: startDate,
       $lte: endDate,
     },
   })
-    .sort({ started_at: 1 })
+    .sort({ createdAt: 1 })
     .lean();
 
   const calendarData = {};
-
   workouts.forEach((workout) => {
-    const day = new Date(workout.started_at).getDate();
-
+    const day = new Date(workout.createdAt).getDate();
     if (!calendarData[day]) {
       calendarData[day] = {
         count: 0,
@@ -43,7 +41,6 @@ export async function getWorkoutsForCalendar(userId, year, month) {
         workouts: [],
       };
     }
-
     calendarData[day].count++;
     calendarData[day].total_duration += workout.duration_seconds;
     calendarData[day].workouts.push({
@@ -51,13 +48,12 @@ export async function getWorkoutsForCalendar(userId, year, month) {
       routine_name: workout.routine_name,
       routine_type: workout.routine_type,
       duration_seconds: workout.duration_seconds,
-      started_at: workout.started_at,
+      started_at: workout.createdAt,
     });
   });
 
   return calendarData;
 }
-
 export async function getWorkoutStats(userId) {
   const userObjectId = new mongoose.Types.ObjectId(userId);
   const now = new Date();
