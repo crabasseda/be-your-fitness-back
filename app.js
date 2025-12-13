@@ -1,5 +1,6 @@
 import cors from "cors";
 import express from "express";
+import athletesRoutes from "./src/routes/athletes.routes.js";
 import authRoutes from "./src/routes/auth.routes.js";
 import routineRoutes from "./src/routes/routine.routes.js";
 import workoutRoutes from "./src/routes/workout.routes.js";
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use("/api/routines", routineRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
+app.use("/api/athletes", athletesRoutes);
 
 app.use((error, req, res, next) => {
   if (error.message === "notfound") {

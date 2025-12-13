@@ -1,4 +1,4 @@
-import { loginUser } from "../services/auth.service.js";
+import { loginUser, registerUser } from "../services/auth.service.js";
 
 export async function register(req, res) {
   try {
@@ -13,7 +13,9 @@ export async function register(req, res) {
       return res.status(400).json({ message: error.message });
     }
 
-    res.status(500).json({ message: "Error al registrar usuario" });
+    res
+      .status(500)
+      .json({ message: "Error al registrar usuario", error: error.message });
   }
 }
 
