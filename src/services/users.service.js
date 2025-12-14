@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
-export async function getAthletesByTrainerId(trainerId) {
+export async function getUsersByTrainerId(trainerId) {
   if (!mongoose.Types.ObjectId.isValid(trainerId)) {
     throw new Error("ID de entrenador no válido");
   }
@@ -18,19 +18,19 @@ export async function getAthletesByTrainerId(trainerId) {
   }));
 }
 
-export async function getAthleteById(athleteId) {
-  if (!mongoose.Types.ObjectId.isValid(athleteId)) {
-    throw new Error("ID de atleta no válido");
+export async function getUserById(userId) {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new Error("ID de user no válido");
   }
-  const athlete = await User.findById(athleteId).select("-password").lean();
+  const user = await User.findById(userId).select("-password").lean();
 
-  if (!athlete) {
+  if (!user) {
     throw new Error("Atleta no encontrado");
   }
 
   return {
-    ...athlete,
-    id: athlete._id.toString(),
+    ...user,
+    id: user._id.toString(),
     _id: undefined,
   };
 }

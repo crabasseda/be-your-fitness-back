@@ -1,8 +1,9 @@
 import cors from "cors";
 import express from "express";
-import athletesRoutes from "./src/routes/athletes.routes.js";
 import authRoutes from "./src/routes/auth.routes.js";
+import feedbackRoutes from "./src/routes/feedback.routes.js";
 import routineRoutes from "./src/routes/routine.routes.js";
+import usersRoutes from "./src/routes/users.routes.js";
 import workoutRoutes from "./src/routes/workout.routes.js";
 
 const app = express();
@@ -13,7 +14,8 @@ app.use(express.json());
 app.use("/api/routines", routineRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
-app.use("/api/athletes", athletesRoutes);
+app.use("/api/users", usersRoutes);
+app.use("/api/feedback", feedbackRoutes);
 
 app.use((error, req, res, next) => {
   if (error.message === "notfound") {

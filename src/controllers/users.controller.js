@@ -1,12 +1,9 @@
-import {
-  getAthleteById,
-  getAthletesByTrainerId,
-} from "../services/athletes.service.js";
+import { getUserById, getUsersByTrainerId } from "../services/users.service.js";
 
-export async function getMyAthletes(req, res, next) {
+export async function getAthletes(req, res, next) {
   try {
     const trainerId = req.user.id;
-    const athletes = await getAthletesByTrainerId(trainerId);
+    const athletes = await getUsersByTrainerId(trainerId);
 
     res.status(200).json(athletes);
   } catch (error) {
@@ -14,12 +11,12 @@ export async function getMyAthletes(req, res, next) {
   }
 }
 
-export async function getAthleteByIdController(req, res, next) {
+export async function getUserByIdController(req, res, next) {
   try {
     const { id } = req.params;
-    const athlete = await getAthleteById(id);
+    const user = await getUserById(id);
 
-    res.status(200).json(athlete);
+    res.status(200).json(user);
   } catch (error) {
     if (
       error.message.includes("no válido") ||
