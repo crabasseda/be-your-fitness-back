@@ -8,7 +8,13 @@ import workoutRoutes from "./src/routes/workout.routes.js";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:4200", "https://beyourfitness.netlify.app"],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 app.use("/api/routines", routineRoutes);
