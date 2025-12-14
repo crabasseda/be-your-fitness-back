@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import { Routine } from "../models/routine.model.js";
+import { User } from "../models/user.model.js";
 
 export async function getAllRoutines(userId = null) {
   const query = userId ? { created_by: userId } : {};
 
   const routines = await Routine.find(query)
-    .select("name type exercises createdAt")
+    .select("name type exercises createdAt assigned_athletes")
     .lean();
 
   return routines;
@@ -60,4 +61,48 @@ export async function deleteRoutine(id) {
   }
 
   return { message: "Rutina eliminada correctamente" };
+}
+
+export async function assignRoutineToAthletes(
+  routineId,
+  athleteIds,
+  trainerId
+) {
+  if (!mongoose.Types.ObjectId.isValid(routineId)) {
+    throw new Error("ID de rutina no válido");
+  }
+
+  const routine = await Routine.findOne({
+    _id: routineId,
+    created_by: trainerId,
+  });
+
+  if (!routine) {
+    throw new Error("Rutina no encontrada o no tienes permisos");
+  }
+
+  const validAthletes = await User.find({
+    _id: { $in: athleteIds },
+    role: "athlete",
+    trainer_id: trainerId,
+  });
+
+  if (validAthletes.length !== athleteIds.length) {
+    throw new Error("Algunos atletas no son válidos o no te pertenecen");
+  }
+
+  routine.assigned_athletes = athleteIds;
+  await routine.save();
+
+  return { message: "Rutina asignada correctamente" };
+}
+
+export async function getAssignedRoutines(athleteId) {
+  const routines = await Routine.find({
+    assigned_athletes: athleteId,
+  })
+    .select("name type exercises createdAt assigned_athletes")
+    .lean();
+
+  return routines;
 }

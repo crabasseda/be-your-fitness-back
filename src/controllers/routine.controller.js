@@ -68,3 +68,38 @@ export const deleteRoutineController = async (req, res, next) => {
     next(error);
   }
 };
+
+export async function assignRoutineController(req, res, next) {
+  try {
+    const trainerId = req.user.id;
+    const { id } = req.params;
+    const { athlete_ids } = req.body;
+
+    if (!Array.isArray(athlete_ids)) {
+      return res.status(400).json({
+        message: "athlete_ids debe ser un array",
+      });
+    }
+
+    const result = await routineService.assignRoutineToAthletes(
+      id,
+      athlete_ids,
+      trainerId
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getAssignedRoutinesController(req, res, next) {
+  try {
+    const athleteId = req.user.id;
+    const routines = await routineService.getAssignedRoutines(athleteId);
+
+    res.status(200).json(routines);
+  } catch (error) {
+    next(error);
+  }
+}

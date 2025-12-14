@@ -139,6 +139,11 @@ const routineSchema = new mongoose.Schema(
       type: scheduleSchema,
       required: false,
     },
+    assigned_athletes: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
   },
   {
     timestamps: true,
