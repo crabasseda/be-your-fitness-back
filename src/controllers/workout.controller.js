@@ -25,7 +25,7 @@ export const createWorkoutController = async (req, res, next) => {
 
 export const getRecentWorkoutsController = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.query.user_id || req.user.id;
     const limit = parseInt(req.query.limit) || 10;
     const { start_date, end_date } = req.query;
 
@@ -43,7 +43,7 @@ export const getRecentWorkoutsController = async (req, res, next) => {
 
 export const getWorkoutsForCalendarController = async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.query.user_id || req.user.id;
     const { year, month } = req.query;
 
     if (!year || !month) {
