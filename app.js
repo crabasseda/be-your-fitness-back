@@ -5,6 +5,7 @@ import feedbackRoutes from "./src/routes/feedback.routes.js";
 import routineRoutes from "./src/routes/routine.routes.js";
 import usersRoutes from "./src/routes/users.routes.js";
 import workoutRoutes from "./src/routes/workout.routes.js";
+import exercisesRoutes from "./src/routes/exercises.routes.js";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api", exercisesRoutes);
 
 app.use((error, req, res, next) => {
   if (error.message === "notfound") {

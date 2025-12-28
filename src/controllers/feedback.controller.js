@@ -1,4 +1,3 @@
-// controllers/feedback.controller.js
 import * as feedbackService from "../services/feedback.service.js";
 
 export async function createFeedbackController(req, res) {
